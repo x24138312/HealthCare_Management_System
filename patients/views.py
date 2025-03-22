@@ -224,4 +224,4 @@ def update_doctor(request, doctor_id):
         doctor.specialization = request.POST['specialization']
         doctor.save()
         return redirect('doctor_list')
-    return render(request, 'update_doctor.html', {'doctor': doctor})     
+    return render(request, 'update_doctor.html', {'doctor': doctor})
