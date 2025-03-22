@@ -4,7 +4,11 @@ phases:
   pre_build:
     commands:
       - echo "Logging in to Docker Hub..."
-      - if [[ -z "$DOCKER_HUB_USERNAME" || -z "$DOCKER_HUB_PASSWORD" ]]; then echo "Error: DOCKER_HUB credentials not set" && exit 1; fi
+      - |
+        if [[ -z "$DOCKER_HUB_USERNAME" || -z "$DOCKER_HUB_PASSWORD" ]]; then 
+          echo "Error: DOCKER_HUB credentials not set" 
+          exit 1
+        fi
       - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - echo "Image tag: $IMAGE_TAG"
@@ -17,7 +21,8 @@ phases:
   build:
     commands:
       - echo "Building Docker image..."
-      - docker build \
+      - |
+        docker build \
           --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
           --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
           --build-arg AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION \
@@ -29,11 +34,10 @@ phases:
     commands:
       - echo "Writing Dockerrun.aws.json file..."
       - |
-        cat <<EOF > Dockerrun.aws.json
-        {
+        echo '{
           "AWSEBDockerrunVersion": "1",
           "Image": {
-            "Name": "satya368/healthcare_system:$IMAGE_TAG",
+            "Name": "satya368/healthcare_system:'"$IMAGE_TAG"'",
             "Update": "true"
           },
           "Ports": [
@@ -44,19 +48,18 @@ phases:
           "Environment": [
             {
               "Name": "AWS_ACCESS_KEY_ID",
-              "Value": "$AWS_ACCESS_KEY_ID"
+              "Value": "'"$AWS_ACCESS_KEY_ID"'"
             },
             {
               "Name": "AWS_SECRET_ACCESS_KEY",
-              "Value": "$AWS_SECRET_ACCESS_KEY"
+              "Value": "'"$AWS_SECRET_ACCESS_KEY"'"
             },
             {
               "Name": "AWS_DEFAULT_REGION",
-              "Value": "$AWS_DEFAULT_REGION"
+              "Value": "'"$AWS_DEFAULT_REGION"'"
             }
           ]
-        }
-        EOF
+        }' > Dockerrun.aws.json
       - echo "Build completed on $(date)"
 
 artifacts:
