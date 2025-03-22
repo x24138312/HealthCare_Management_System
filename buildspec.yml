@@ -1,12 +1,11 @@
----
 version: 0.2
+
 phases:
   pre_build:
     commands:
       - echo "Logging in to Docker Hub..."
-      - 'if [[ -z "$DOCKER_HUB_USERNAME" || -z "$DOCKER_HUB_PASSWORD" ]]; then echo "Error': DOCKER_HUB credentials not set" && exit 1; fi
-      - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME"
-        --password-stdin
+      - if [[ -z "$DOCKER_HUB_USERNAME" || -z "$DOCKER_HUB_PASSWORD" ]]; then echo "Error: DOCKER_HUB credentials not set" && exit 1; fi
+      - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - echo "Image tag: $IMAGE_TAG"
       - echo "Setting up AWS credentials..."
@@ -14,20 +13,23 @@ phases:
       - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
       - export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
       - echo "AWS credentials configured."
+
   build:
     commands:
       - echo "Building Docker image..."
-      - docker build --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-        --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg
-        AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION -t
-        satya368/healthcare_system:$IMAGE_TAG .
+      - docker build \
+          --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+          --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+          --build-arg AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION \
+          -t satya368/healthcare_system:$IMAGE_TAG .
       - echo "Pushing Docker image to Docker Hub..."
       - docker push satya368/healthcare_system:$IMAGE_TAG
+
   post_build:
     commands:
       - echo "Writing Dockerrun.aws.json file..."
       - |
-        cat <<EOT > Dockerrun.aws.json
+        cat <<EOF > Dockerrun.aws.json
         {
           "AWSEBDockerrunVersion": "1",
           "Image": {
@@ -54,8 +56,9 @@ phases:
             }
           ]
         }
-        EOT
+        EOF
       - echo "Build completed on $(date)"
+
 artifacts:
   files:
     - Dockerrun.aws.json
