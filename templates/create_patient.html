@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Add Patient</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Patient ID</label>
+        <input type="text" name="patient_id" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Phone</label>
+        <input type="text" name="phone" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Doctor ID</label>
+        <input type="text" name="doctor_id" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Appointment Date</label>
+        <input type="datetime-local" name="date" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Medical Report</label>
+        <input type="file" name="report" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Add Patient</button>
+</form>
+{% endblock %}

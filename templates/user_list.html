@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Registered Users Details</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Fullname</th>
+            <th>Gender</th>
+            <th>Mobile Number</th>
+            <th>Email</th>
+            <th>Registration Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.gender|default:"N/A" }}</td>
+            <td>{{ user.phone|default:"N/A" }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.date_joined }}</td>
+            <td>
+                <a href="{% url 'user_appointments' user.id %}" class="btn btn-warning btn-sm">Appointments</a>
+                <a href="{% url 'delete_user' user.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No users found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

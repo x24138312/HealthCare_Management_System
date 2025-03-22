@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Appointment History</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Patient ID</th>
+            <th>Doctor ID</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in appointments %}
+        <tr>
+            <td>{{ appointment.patient_id }}</td>
+            <td>{{ appointment.doctor_id }}</td>
+            <td>{{ appointment.date }}</td>
+            <td>{{ appointment.status }}</td>
+            <td>
+                <a href="{% url 'update_appointment' appointment.id %}" class="btn btn-warning btn-sm">Update</a>
+                <a href="{% url 'delete_appointment' appointment.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No appointments found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

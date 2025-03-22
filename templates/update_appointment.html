@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Update Appointment</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-select" id="status" name="status" required>
+            <option value="NEW" {% if appointment.status == 'NEW' %}selected{% endif %}>New</option>
+            <option value="APPROVED" {% if appointment.status == 'APPROVED' %}selected{% endif %}>Approved</option>
+            <option value="CANCELLED" {% if appointment.status == 'CANCELLED' %}selected{% endif %}>Cancelled</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a href="{% url 'appointment_history' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

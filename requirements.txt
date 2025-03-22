@@ -1,0 +1,7 @@
+django==4.2
+boto3==1.26.0
+django-storages==1.13.2
+python-decouple==3.8
+watchtower==3.0.1
+gunicorn==22.0.0
+whitenoise==6.7.0

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Welcome to Healthcare Management System</h2>
+<p>Please choose an option:</p>
+<a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+<a href="{% url 'signup' %}" class="btn btn-secondary">Signup</a>
+{% endblock %}

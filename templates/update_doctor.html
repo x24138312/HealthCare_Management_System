@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Update Doctor</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ doctor.name }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" value="{{ doctor.email }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="phone" class="form-label">Mobile Number</label>
+        <input type="text" class="form-control" id="phone" name="phone" value="{{ doctor.phone }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="specialization" class="form-label">Specialization</label>
+        <select class="form-select" id="specialization" name="specialization" required>
+            <option value="Cardiology" {% if doctor.specialization == 'Cardiology' %}selected{% endif %}>Cardiology</option>
+            <option value="Neurology" {% if doctor.specialization == 'Neurology' %}selected{% endif %}>Neurology</option>
+            <option value="Orthopedics" {% if doctor.specialization == 'Orthopedics' %}selected{% endif %}>Orthopedics</option>
+            <option value="General" {% if doctor.specialization == 'General' %}selected{% endif %}>General</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a href="{% url 'doctor_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-0">Welcome {{ user.username }}!</h2> <!-- Removed margin-bottom -->
+<div class="row mb-0"> <!-- Ensure no bottom margin -->
+    <div class="col-md-4">
+        <div class="card" style="background-color: #ffca2c;">
+            <i class="fas fa-calendar-check"></i>
+            <h5>All Appointments</h5>
+            <p>{{ all_appointments }}</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card" style="background-color: #17a2b8;">
+            <i class="fas fa-calendar-plus"></i>
+            <h5>New Appointments</h5>
+            <p>{{ new_appointments }}</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card" style="background-color: #6f42c1;">
+            <i class="fas fa-check-circle"></i>
+            <h5>Approved Appointments</h5>
+            <p>{{ approved_appointments }}</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card" style="background-color: #dc3545;">
+            <i class="fas fa-times-circle"></i>
+            <h5>Cancelled Appointments</h5>
+            <p>{{ cancelled_appointments }}</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card" style="background-color: #6610f2;">
+            <i class="fas fa-users"></i>
+            <h5>Total Patients</h5>
+            <p>{{ total_patients }}</p>
+        </div>
+    </div>
+</div>
+
+<h3 class="mt-0 mb-0">Upcoming Appointments</h3> <!-- Removed all margins -->
+<table class="table table-bordered mt-0"> <!-- Ensure no margin-top on the table -->
+    <thead>
+        <tr>
+            <th>Patient ID</th>
+            <th>Doctor ID</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in upcoming_appointments %}
+        <tr>
+            <td>{{ appointment.patient_id }}</td>
+            <td>{{ appointment.doctor_id }}</td>
+            <td>{{ appointment.date }}</td>
+            <td>{{ appointment.status }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No upcoming appointments.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
